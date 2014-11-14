@@ -7,10 +7,19 @@ module SpiderSeo
     private
       # Writer for :document
       attr_writer :document
+      # Writer for :metadata
+      attr_writer :metadata
 
     public
       # Contains Nokogiri::HTML::Document object
       attr_reader :document
+      # Contains a SpiderSeo::Document::Metadata object
+      attr_reader :metadata
+
+      # Getter for metadata
+      def metadata
+        self.metadata ||= SpiderSeo::Document::Metadata.new
+      end
 
       # Initializer
       # uri_or_html is either an URI or a HTML string
