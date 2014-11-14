@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'spider/seo/version'
+require 'spider-seo/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "spider-seo"
-  spec.version       = Spider::Seo::VERSION
-  spec.authors       = ["TODO: Write your name"]
+  spec.version       = SpiderSeo::VERSION
+  spec.authors       = ["Valentin Druon"]
   spec.email         = ["valentin.druon@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Get information about HTML content easily.}
+  spec.description   = %q{Get information about HTML content easily.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,4 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_dependency "nokogiri"
 end
