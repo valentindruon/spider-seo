@@ -23,9 +23,14 @@ module SpiderSeo
           )}
       end
 
-      # Get all document's <a> tags with attributes rel="nofollow"
+      # Get all document's <a> tags with attribute rel="nofollow"
       def no_follow
         all.select {|link| link.is_no_follow? }
+      end
+
+      # Get all document's <a> tags that have not attribute rel="nofollow"
+      def followed
+        all.select {|link| not link.is_no_follow? }
       end
     end
   end
