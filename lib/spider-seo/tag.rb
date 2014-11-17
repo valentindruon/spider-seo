@@ -7,7 +7,7 @@ module SpiderSeo
 
       # Constructor
       def initialize name = nil, text = nil, attributes = []
-        self.name = nil
+        self.name = name
         self.text = text
         self.attributes = attributes
       end

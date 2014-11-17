@@ -1,5 +1,7 @@
 require "spider-seo/version"
 require 'nokogiri'
+require 'spider-seo/tag'
+require 'spider-seo/attribute'
 require 'spider-seo/metadata'
 require 'spider-seo/links'
 
@@ -41,6 +43,18 @@ module SpiderSeo
     def from_uri uri, options = {}
       require 'open-uri'
       self.document = Nokogiri::HTML(open(uri, options))
+    end
+
+    # Get an array of SpiderSeo::Document::Tag
+    # Parameter @tag is the tag name
+    def tag(name)
+      self.document.xpath("//#{name}").map do |node|
+        SpiderSeo::Document::Tag.new(
+          node.name,
+          node.text,
+          node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) }
+        )
+      end
     end
   end
 end

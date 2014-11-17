@@ -6,7 +6,6 @@ module SpiderSeo
       class Link < SpiderSeo::Document::Tag
 
         attr_accessor :href
-        attr_accessor :text
 
         # Constructor
         def initialize(name = nil, href = nil, text = nil, attributes = [])
