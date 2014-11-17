@@ -1,6 +1,7 @@
 require "spider-seo/version"
 require 'nokogiri'
 require 'spider-seo/metadata'
+require 'spider-seo/link'
 
 module SpiderSeo
   class Document
