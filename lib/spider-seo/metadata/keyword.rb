@@ -23,7 +23,7 @@ module SpiderSeo
         # Count self.word occurences in self.document
         def count_occurences(tag = nil)
           if tag
-            self.document.xpath("/html//#{tag}[contains(text(),'#{self.word.downcase}')]").size
+            self.document.xpath("/html//#{tag}[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'#{self.word.downcase}')]").size
           else
             self.document.search('script').each {|el| el.unlink}
             self.document.search('style').each {|el| el.unlink}
@@ -33,7 +33,7 @@ module SpiderSeo
 
         # Get self.word html wrapper (example: the word "Lorem" is contained in <p>, <strong> and <h1>)
         def get_wrappers
-          self.document.xpath("/html//*[contains(text(),'#{self.word}')]").map do |node|
+          self.document.xpath("/html//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'#{self.word.downcase}')]").map do |node|
             SpiderSeo::Document::Tag.new(
               node.name,
               node.attribute_nodes.map {|att| SpiderSeo::Document::Attribute.new(att.node_name, att.value)}
