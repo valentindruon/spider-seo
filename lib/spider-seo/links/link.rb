@@ -5,6 +5,7 @@ module SpiderSeo
 
         attr_accessor :href
         attr_accessor :text
+        attr_accessor :attributes
 
         # Constructor
         def initialize(href = nil, text = nil, attributes = [])
