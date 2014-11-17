@@ -13,6 +13,11 @@ module SpiderSeo
           self.text = text
           self.attributes = attributes
         end
+
+        # Determines if self is a link with rel="nofollow" attribute
+        def is_no_follow?
+          return !self.attributes.select {|att| att.name == 'rel' and att.value == 'nofollow'}.first.nil?
+        end
       end
     end
   end

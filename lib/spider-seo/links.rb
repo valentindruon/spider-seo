@@ -22,6 +22,11 @@ module SpiderSeo
           node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) }
           )}
       end
+
+      # Get all document's <a> tags with attributes rel="nofollow"
+      def no_follow
+        all.select {|link| link.is_no_follow? }
+      end
     end
   end
 end
