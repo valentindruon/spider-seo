@@ -17,6 +17,7 @@ module SpiderSeo
           self.word = word
           self.document = doc
           self.count = count_occurences if self.document
+          self.wrappers = get_wrappers
         end
 
         # Count self.word occurences in self.document
@@ -31,8 +32,13 @@ module SpiderSeo
         end
 
         # Get self.word html wrapper (example: the word "Lorem" is contained in <p>, <strong> and <h1>)
-        def wrappers
-          self.document.xpath("/html//*[contains(text(),'#{self.word}')]")
+        def get_wrappers
+          self.document.xpath("/html//*[contains(text(),'#{self.word}')]").map do |node|
+            SpiderSeo::Document::Tag.new(
+              node.name,
+              node.attribute_nodes.map {|att| SpiderSeo::Document::Attribute.new(att.node_name, att.value)}
+            )
+          end
         end
 
         # to_s override
