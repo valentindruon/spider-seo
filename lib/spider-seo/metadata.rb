@@ -11,44 +11,45 @@ module SpiderSeo
       attr_accessor :document
 
       # Getter for title
-      def title
+      def meta_meta_title
         self.document.title
       end
 
       # Getter for encoding
-      def encoding
+      def meta_encoding
         self.document.meta_encoding
       end
 
       # Getter for meta keywords
-      def keywords options = {}
+      def meta_keywords
         xpath_meta_query('keywords')
       end
 
       # Getter for meta description
-      def description
+      def meta_description
         xpath_meta_query('description')
       end
 
       # Getter for meta google
-      def google
+      def meta_google
         xpath_meta_query('google')
       end
 
       # Getter for meta googlebot
-      def googlebot
+      def meta_googlebot
         xpath_meta_query('googlebot')
       end
 
       # Getter for meta robots
-      def robots
+      def meta_robots
         xpath_meta_query('robots')
       end
 
       # Getter for meta verify
-      def verify
+      def meta_verify
         xpath_meta_query('verify')
       end
+
 
       # Getter for a specific meta tag
       # No cache for this method, Nokogiri::HTML::Document#xpath method is executed on each method call
