@@ -7,8 +7,10 @@ module SpiderSeo
         attr_accessor :word
         # Accessors for self.word occurences count
         attr_accessor :count
-        # Accessord for document
+        # Accessors for document
         attr_accessor :document
+        # Accessors for wrappers
+        attr_accessor :wrappers
 
         # Constructor
         def initialize word, doc = nil
@@ -18,10 +20,19 @@ module SpiderSeo
         end
 
         # Count self.word occurences in self.document
-        def count_occurences
-          self.document.search('script').each {|el| el.unlink} # Remove all script tags
-          self.document.search('style').each {|el| el.unlink} # Remove all style tags
-          self.document.text.downcase.scan(/#{self.word.downcase}/).count
+        def count_occurences(tag = nil)
+          if tag
+            self.document.xpath("/html//#{tag}[contains(text(),'#{self.word.downcase}')]").size
+          else
+            self.document.search('script').each {|el| el.unlink}
+            self.document.search('style').each {|el| el.unlink}
+            self.document.text.downcase.scan(self.word.downcase).size
+          end
+        end
+
+        # Get self.word html wrapper (example: the word "Lorem" is contained in <p>, <strong> and <h1>)
+        def wrappers
+          self.document.xpath("/html//*[contains(text(),'#{self.word}')]")
         end
 
         # to_s override
