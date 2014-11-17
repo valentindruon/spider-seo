@@ -4,6 +4,7 @@ require 'spider-seo/tag'
 require 'spider-seo/attribute'
 require 'spider-seo/metadata'
 require 'spider-seo/links'
+require 'spider-seo/microdata'
 
 module SpiderSeo
   class Document
@@ -28,6 +29,7 @@ module SpiderSeo
         end
         self.metadata = SpiderSeo::Document::Metadata.new(self.document)
         self.links = SpiderSeo::Document::Links.new(self.document)
+        self.microdata = SpiderSeo::Document::Microdata.new(self.document)
       end
       return self
     end
@@ -54,7 +56,7 @@ module SpiderSeo
           node.name,
           node.text,
           node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-          children(node)
+          SpiderSeo::Utils::children(node)
         )
       end
     end
