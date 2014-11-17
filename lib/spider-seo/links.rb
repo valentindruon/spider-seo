@@ -1,3 +1,5 @@
+require 'spider-seo/links/link'
+
 module SpiderSeo
   class Document
     class Links
