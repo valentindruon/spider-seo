@@ -11,16 +11,22 @@ module SpiderSeo
         attr_accessor :document
 
         # Constructor
-        def initialize doc = nil
+        def initialize word, doc = nil
+          self.word = word
           self.document = doc
-          count_occurences if self.document
+          self.count = count_occurences if self.document
         end
 
         # Count self.word occurences in self.document
         def count_occurences
-          text = self.document.xpath("//text()").to_s
-          words = text.split(/\s+/)
-          return words.select {|w| w == self.word }.size
+          self.document.search('script').each {|el| el.unlink} # Remove all script tags
+          self.document.search('style').each {|el| el.unlink} # Remove all style tags
+          self.document.text.downcase.scan(/#{self.word.downcase}/).count
+        end
+
+        # to_s override
+        def to_s
+          "#{self.word} - #{self.count}"
         end
       end
     end

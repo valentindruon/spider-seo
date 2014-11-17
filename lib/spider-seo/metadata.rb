@@ -1,3 +1,5 @@
+require 'spider-seo/metadata/keyword'
+
 module SpiderSeo
   class Document
     class Metadata
@@ -50,6 +52,14 @@ module SpiderSeo
         xpath_meta_query('verify')
       end
 
+      # Returns a SpiderSeo::Document::Metadata::Keyword Array
+      def keywords
+        words = meta_keywords
+        if words
+          return words.split(',').map { |w| SpiderSeo::Document::Metadata::Keyword.new(w, self.document) }
+        end
+        return nil
+      end
 
       # Getter for a specific meta tag
       # No cache for this method, Nokogiri::HTML::Document#xpath method is executed on each method call
