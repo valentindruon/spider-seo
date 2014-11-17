@@ -1,13 +1,14 @@
 require "spider-seo/version"
 require 'nokogiri'
 require 'spider-seo/metadata'
-require 'spider-seo/link'
+require 'spider-seo/links'
 
 module SpiderSeo
   class Document
     # Contains Nokogiri::HTML::Document object
     attr_accessor :document
     attr_accessor :metadata
+    attr_accessor :links
 
     # Initializer
     # uri_or_html is either an URI or a HTML string
@@ -23,6 +24,7 @@ module SpiderSeo
           raise "The string you provided is neither an URI nor a HTML string."
         end
         self.metadata = SpiderSeo::Document::Metadata.new(self.document)
+        self.links = SpiderSeo::Document::Links.new(self.document)
       end
       return self
     end
