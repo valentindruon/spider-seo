@@ -17,6 +17,7 @@ module SpiderSeo
       def all
         links = self.document.css('a')
         links.map {|node| SpiderSeo::Document::Links::Link.new(
+          node.name,
           node['href'],
           node.text,
           node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) }

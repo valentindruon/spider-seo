@@ -1,14 +1,16 @@
+require 'spider-seo/tag'
+
 module SpiderSeo
   class Document
     class Links
-      class Link
+      class Link < SpiderSeo::Document::Tag
 
         attr_accessor :href
         attr_accessor :text
-        attr_accessor :attributes
 
         # Constructor
-        def initialize(href = nil, text = nil, attributes = [])
+        def initialize(name = nil, href = nil, text = nil, attributes = [])
+          self.name = name
           self.href = href
           self.text = text
           self.attributes = attributes
