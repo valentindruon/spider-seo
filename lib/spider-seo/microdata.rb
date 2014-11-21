@@ -1,4 +1,5 @@
 require 'spider-seo/tag'
+require 'spider-seo/utils'
 
 module SpiderSeo
   class Document
@@ -13,14 +14,8 @@ module SpiderSeo
 
       # Get all elements that have itemprop as an attribute
       def list
-        self.document.xpath("//*[@itemprop]").map do |node|
-          SpiderSeo::Document::Tag.new(
-            node.name,
-            node.text,
-            node.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-            SpiderSeo::Utils::children(node)
-          )
-        end
+        query = "//*[@itemprop]"
+        SpiderSeo::Utils::xpath(self.document, query)
       end
 
       # Get all elements that have itemscope attribute and fill their children with itemprop descendants
@@ -29,8 +24,8 @@ module SpiderSeo
           SpiderSeo::Document::Tag.new(
             node.name,
             node.text,
-            node.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-            SpiderSeo::Utils::children(node)
+            SpiderSeo::Utils::attributes(node),
+            descendants(node)
           )
         end
       end
@@ -43,7 +38,7 @@ module SpiderSeo
             SpiderSeo::Document::Tag.new(
               child.name,
               child.text,
-              child.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) }
+              SpiderSeo::Utils::attributes(child)
             )
           end
         end
