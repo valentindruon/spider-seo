@@ -1,3 +1,5 @@
+require 'spider-seo/utils'
+
 module SpiderSeo
   class Document
     class Metadata
@@ -21,24 +23,23 @@ module SpiderSeo
         end
 
         # Count self.word occurences in self.document
+        # If tag specified, only look for self.word that are wrapped in tag
+        # Else look in all document
         def count_occurences(tag = nil)
           if tag
             self.document.xpath("/html//#{tag}[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'#{self.word.downcase}')]").size
           else
-            self.document.search('script').each {|el| el.unlink}
-            self.document.search('style').each {|el| el.unlink}
-            self.document.text.downcase.scan(self.word.downcase).size
+            doc = self.document.clone
+            doc.search('script').each {|el| el.unlink}
+            doc.search('style').each {|el| el.unlink}
+            doc.text.downcase.scan(self.word.downcase).size
           end
         end
 
-        # Get self.word html wrapper (example: the word "Lorem" is contained in <p>, <strong> and <h1>)
+        # Get self.word html wrappers (example: the word "Lorem" is contained in <p>, <strong> and <h1>)
         def get_wrappers
-          self.document.xpath("/html//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'#{self.word.downcase}')]").map do |node|
-            SpiderSeo::Document::Tag.new(
-              node.name,
-              node.attribute_nodes.map {|att| SpiderSeo::Document::Attribute.new(att.node_name, att.value)}
-            )
-          end
+          query = "/html//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'#{self.word.downcase}')]"
+          SpiderSeo::Utils::xpath(self.document, query)
         end
 
         # to_s override

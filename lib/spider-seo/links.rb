@@ -1,5 +1,5 @@
 require 'spider-seo/links/link'
-require 'spider-seo/attribute'
+require 'spider-seo/utils'
 
 module SpiderSeo
   class Document
@@ -20,8 +20,8 @@ module SpiderSeo
           node.name,
           node['href'],
           node.text,
-          node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) }
-          )}
+          SpiderSeo::Utils::attributes(node)
+        )}
       end
 
       # Get all document's <a> tags with attribute rel="nofollow"

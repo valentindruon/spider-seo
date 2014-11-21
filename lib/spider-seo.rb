@@ -4,6 +4,8 @@ require 'spider-seo/tag'
 require 'spider-seo/attribute'
 require 'spider-seo/metadata'
 require 'spider-seo/links'
+require 'spider-seo/microdata'
+require 'spider-seo/utils'
 
 module SpiderSeo
   class Document

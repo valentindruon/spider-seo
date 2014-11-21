@@ -52,6 +52,51 @@ module SpiderSeo
         xpath_meta_query('verify')
       end
 
+      # Getter for link tags
+      # If rel is nil, return all <link> tags
+      # Else, returns <link> tags with specified rel value
+      # If options[:group] is set to true, will return a hash of array of SpiderSeo::Document::Tag
+      def link(rel = [], options = {group: false})
+        rel = Array(rel) unless rel.is_a? Array
+        if options[:group]
+          query = "//link[@rel = '%{value}']"
+          return Hash[
+            rel.map do |r|
+              [r, SpiderSeo::Utils::xpath(self.document, query % {value: r})]
+            end
+          ]
+        else
+          rel_test = '['
+          rel_test << rel.map{|r| "@rel = '#{r}'"}.join(' or ')
+          rel_test << ']'
+          query = "//link" + rel_test
+          return SpiderSeo::Utils::xpath(self.document, query)
+        end
+      end
+
+      # Getter for <link rel="canonical">
+      # Just an alias for link('canonical')
+      def canonical
+        link('canonical')
+      end
+
+      # Getter for <link rel="alternate">
+      # Just an alias for link('alternate')
+      def alternate
+        link('canonical')
+      end
+
+      # Getter for <link rel="stylesheet">
+      # Just an alias for link('stylesheet')
+      def stylesheet
+        link('stylesheet')
+      end
+
+      # Getter for <link rel="prev"> and <link rel="next">
+      def pagination options = {group: false}
+        link(['prev', 'next'], group: options[:group])
+      end
+
       # Returns a SpiderSeo::Document::Metadata::Keyword Array
       def keywords
         words = meta_keywords
@@ -88,7 +133,7 @@ module SpiderSeo
         # Will only look for tag that have name="#{name_or_http_equiv_value}" or http-equiv="#{name_or_http_equiv_value}"
         # Translate in xpath query is here to handle meta tags case (ex: name="keywords" or name="KEyWordS" etc...) and lower-case it
         def xpath_meta_query(name_or_http_equiv_value)
-          (self.document.xpath(XPATH_META_QUERY % {attr_name: 'name', attr_value: name_or_http_equiv_value.downcase}) ||
+          (self.document.xpath(XPATH_META_QUERY % {attr_name: 'name', attr_value: name_or_http_equiv_value.downcase}).to_s ||
           self.document.xpath(XPATH_META_QUERY % {attr_name: 'http-equiv', attr_value: name_or_http_equiv_value.downcase})).to_s
         end
 

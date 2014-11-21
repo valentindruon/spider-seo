@@ -13,6 +13,12 @@ module SpiderSeo
         self.attributes = attributes
         self.children = children
       end
+
+      def to_s
+        "#{self.name}
+          \n\tText : #{self.text}
+          \n\tAttributes : #{attributes.map{|a| a.to_s}}"
+      end
     end
   end
 end
