@@ -13,6 +13,7 @@ module SpiderSeo
     attr_accessor :document
     attr_accessor :metadata
     attr_accessor :links
+    attr_accessor :microdata
 
     # Initializer
     # uri_or_html is either an URI or a HTML string
@@ -29,6 +30,7 @@ module SpiderSeo
         end
         self.metadata = SpiderSeo::Document::Metadata.new(self.document)
         self.links = SpiderSeo::Document::Links.new(self.document)
+        self.microdata = SpiderSeo::Document::Microdata.new(self.document)
       end
       return self
     end
@@ -55,23 +57,9 @@ module SpiderSeo
           node.name,
           node.text,
           node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-          children(node)
+          SpiderSeo::Utils::children(node)
         )
       end
     end
-
-    private
-
-      # Get children of an element, an cast them as a SpiderSeo::Document::Tag object
-      def children(element)
-        element.children.map do |child|
-          SpiderSeo::Document::Tag.new(
-            child.name,
-            child.text,
-            child.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-            children(child)
-          )
-        end
-      end
   end
 end
