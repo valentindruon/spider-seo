@@ -12,6 +12,7 @@ module SpiderSeo
       end
 
       attr_accessor :document
+      attr_accessor :website_uri
 
       # Get all document's <a> tags
       def all
@@ -22,6 +23,16 @@ module SpiderSeo
           node.text,
           SpiderSeo::Utils::attributes(node)
         )}
+      end
+
+      # Get all document's <a> tags that link to an internal uri
+      def internal
+        self.all.select {|link| link.internal?(self.website_uri)}
+      end
+
+      # Get all document's <a> tags that link to an external uri
+      def external
+        self.all.select {|link| not link.internal?(self.website_uri)}
       end
 
       # Get all document's <a> tags with attribute rel="nofollow"

@@ -18,18 +18,23 @@ module SpiderSeo
     # Initializer
     # uri_or_html is either an URI or a HTML string
     # options is options to pass to open-uri#open
+    # TODO : add html files support
     def initialize uri_or_html = nil, options = {}
       if uri_or_html
         require 'uri'
         if uri_or_html =~ /\A#{URI::regexp}\z/ # Use URI::regexp to check if uri_or_html is an uri
           self.document = from_uri uri_or_html
+          uri = true
         elsif uri_or_html =~ /^s*<[^Hh>]*html/ # Use regexp to check if uri_or_html is a HTML string
           self.document = from_html uri_or_html, options
         else
           raise "The string you provided is neither an URI nor a HTML string."
         end
         self.metadata = SpiderSeo::Document::Metadata.new(self.document)
+
         self.links = SpiderSeo::Document::Links.new(self.document)
+        self.links.website_uri = uri_or_html if uri
+
         self.microdata = SpiderSeo::Document::Microdata.new(self.document)
       end
       return self
