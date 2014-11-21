@@ -52,13 +52,8 @@ module SpiderSeo
     # Get an array of SpiderSeo::Document::Tag
     # Parameter @tag is the tag name
     def tag(name)
-      self.document.xpath("//#{name}").map do |node|
-        SpiderSeo::Document::Tag.new(
-          node.name,
-          node.text,
-          node.attribute_nodes.map { |att| SpiderSeo::Document::Attribute.new(att.node_name, att.value) },
-          SpiderSeo::Utils::children(node)
-        )
+      query = "//#{name}"
+      SpiderSeo::Utils::xpath(self.document, query)
       end
     end
   end
