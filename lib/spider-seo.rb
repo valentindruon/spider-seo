@@ -54,7 +54,6 @@ module SpiderSeo
     def tag(name)
       query = "//#{name}"
       SpiderSeo::Utils::xpath(self.document, query)
-      end
     end
   end
 end
