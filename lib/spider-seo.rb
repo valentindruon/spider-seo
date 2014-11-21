@@ -49,11 +49,42 @@ module SpiderSeo
       self.document = Nokogiri::HTML(open(uri, options))
     end
 
-    # Get an array of SpiderSeo::Document::Tag
+    # Get specific tags
     # Parameter @tag is the tag name
-    def tag(name)
+    # Option method is either :list or :count
+    # :list will return SpiderSeo::Document::Tag array
+    # :count will return the number of tag in document
+    def tag(name, options = {method: :list})
       query = "//#{name}"
-      SpiderSeo::Utils::xpath(self.document, query)
+      return SpiderSeo::Utils::xpath(self.document, query) if options[:method] == :list
+      return SpiderSeo::Utils::xpath(self.document, query).size if options[:method] == :count
+    end
+
+    # Get h1 tags
+    # Option method is either :list or :count
+    # :list will return SpiderSeo::Document::Tag array
+    # :count will return the number of tag in document
+    # Just an alias for #tag
+    def h1(options = {method: :list})
+      tag('h1', method: options[:method])
+    end
+
+    # Get h2 tags
+    # Option method is either :list or :count
+    # :list will return SpiderSeo::Document::Tag array
+    # :count will return the number of tag in document
+    # Just an alias for #tag
+    def h2(options = {method: :list})
+      tag('h2', method: options[:method])
+    end
+
+    # Get p tags
+    # Option method is either :list or :count
+    # :list will return SpiderSeo::Document::Tag array
+    # :count will return the number of tag in document
+    # Just an alias for #tag
+    def p(options = {method: :list})
+      tag('p', method: options[:method])
     end
   end
 end
